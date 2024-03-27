@@ -53,44 +53,14 @@ dfun2 = griddedInterpolant(0:10^4,gradient(fun2(0:10^4),0:10^4));
 
 h_end = y(end,1)/max(abs(y(:,1)));
 
-if true
 
-    b2 = y(:,2)/y(end,2);
-    h2 = y(:,1)/y(end,2);
-    m2 = rhoi*(sig*b2+A*N(x).^n.*b2-A*n*N(x).^(n-1)*rhow*g.*b(x).*h2);
+b2 = y(:,2)/y(end,2);
+h2 = y(:,1)/y(end,2);
 subplot(2,1,1)
 plot(x,y(:,1)/y(end,2))
 subplot(2,1,2)
 plot(x,y(:,2)/y(end,2))
 
-else
-    cmp = parula(6);
-    s2d = load('shakti_500m_ieb10.mat');
-    berr = s2d.b - b(10^4-(s2d.x2));
-subplot(4,1,1);
-hold on
-herr =s2d.h - hbar(10^4-(s2d.x1));
-plot(10^4-(s2d.x1),(herr),'.','color',cmp(1,:),'linewidth',2,'markersize',12);
-plot(x,y(:,1)./max(abs(y(:,2)))*max(abs(berr)),'k',LineWidth=1)
-subplot(4,1,2)
-dhhat = ((A*n*N(x).^(n-1)*rhow*g.*b(x)).*y(:,1) - (sig-sig0(x)).*y(:,2))./(Mh(x)/rhoi);
-qhatx = Qb(x).*y(:,2)-Qh(x).*dhhat;
-qhaty = K(x)*k.*y(:,1);
-qhat = sqrt(qhatx.^2 + qhaty.^2);
-hold on
-qerr =s2d.q - q(10^4-(s2d.x2));
-plot(10^4-(s2d.x2),(qerr),'.','color',cmp(2,:),'linewidth',2,'markersize',12);
-plot(x,qhat./max(abs(y(:,2)))*max(abs(berr)),'k',LineWidth=1)
-subplot(4,1,3)
-hold on
-plot(10^4-(s2d.x2),(berr),'.','color',cmp(3,:),'linewidth',2,'markersize',12);
-plot(x,y(:,2)./max(abs(y(:,2)))*max(abs(berr)),'k',LineWidth=1)
-subplot(4,1,4)
-hold on
-Nerr = s2d.N - N(10^4-(s2d.x1));
-plot(10^4-(s2d.x1),(Nerr),'.','color',cmp(4,:),'linewidth',2,'markersize',12);
-plot(x,-rhow*g*y(:,1)./max(abs(y(:,2)))*max(abs(berr)),'k',LineWidth=1)
-end
 
 function dydx = bvpfcn(x,y)
     h = y(1);
